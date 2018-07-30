@@ -1,0 +1,15 @@
+#big-height{
+    min-height: 210vh;
+}
+section{
+    height: 70vh;
+}
+.red{
+    background-color: tomato;
+}
+.green{
+    background-color: darkseagreen;
+}
+.blue{
+    background-color: darkcyan;
+}
