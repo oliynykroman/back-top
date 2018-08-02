@@ -1,4 +1,6 @@
 (function () {
+
+    // define button
     let backToButton = document.createElement('button');
     backToButton.className = 'back-to-top';
     backToButton.id = 'back-to-button';
@@ -6,19 +8,47 @@
 
     function buttonTopClick() {
         let basicTime = 0;
-        let scrolled = window.pageYOffset || document.documentElement.scrollTop;
+
+        let scrollPos = 0;
+        let currentScrollPos = 0;
+
         function BackTo() {
+
         }
-        BackTo.toTop = function () {
-            console.log(scrolled);
+
+        function timer(time, scrollFrom, scrollTo) {
+            let start = Date.now();
+            let curr = scrollFrom;
+            let step = time/scrollFrom;
+            console.log('step'+step);
+           var timer =  setTimeout(function tick() {
+               timeEl = Date.now() - start;
+               console.log(timeEl);
+                if (scrollFrom > scrollTo) {
+                    console.log('to top' + scrollFrom);
+                    scrollFrom = scrollFrom - step;
+                }
+                timer = setTimeout(tick, step);
+                window.scrollTo(0, scrollFrom);
+                if (scrollTo >= scrollFrom) {
+                    clearTimeout(timer);
+                }
+            }, 0);
+        }
+
+
+        BackTo.toTop = function (duration) {
+            currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+            timer(duration, currentScrollPos, 0);
+
         };
         return BackTo;
     }
 
-let buttonElem = buttonTopClick();
-backToButton.addEventListener('click', function (e) {
-    buttonElem.toTop();
-})
+    let buttonElem = buttonTopClick();
+    backToButton.addEventListener('click', function (e) {
+        buttonElem.toTop(10000);
+    })
 
 })
 ()
