@@ -8,29 +8,22 @@
 
     function buttonTopClick() {
         let basicTime = 0;
-
         let scrollPos = 0;
-        let currentScrollPos = 0;
+
 
         function BackTo() {
 
         }
 
         function timer(time, scrollFrom, scrollTo) {
-            let start = Date.now();
-            let curr = scrollFrom;
-            let step = time/scrollFrom;
-            console.log('step'+step);
-           var timer =  setTimeout(function tick() {
-               timeEl = Date.now() - start;
-               console.log(timeEl);
-                if (scrollFrom > scrollTo) {
-                    console.log('to top' + scrollFrom);
-                    scrollFrom = scrollFrom - step;
-                }
-                timer = setTimeout(tick, step);
-                window.scrollTo(0, scrollFrom);
-                if (scrollTo >= scrollFrom) {
+            let step = scrollFrom*100 / time;
+            let timer = setTimeout(function timer() {
+                scrollFrom = scrollFrom - step;
+                if (scrollFrom >= 0) {
+                    window.scrollTo(0, scrollFrom);
+                    console.log(scrollFrom);
+                    timer = setTimeout(timer, 1);
+                } else {
                     clearTimeout(timer);
                 }
             }, 0);
@@ -38,7 +31,7 @@
 
 
         BackTo.toTop = function (duration) {
-            currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+            let currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
             timer(duration, currentScrollPos, 0);
 
         };
