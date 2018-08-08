@@ -7,40 +7,50 @@
     document.body.appendChild(backToButton);
 
     function buttonTopClick() {
-        let basicTime = 0;
-        let scrollPos = 0;
+        // temporary linear scroll move function
 
+        function timer(time, scrollFrom, scrollTo, delay) {
+            let step = scrollFrom * 100 / time;
 
-        function BackTo() {
-
-        }
-
-        function timer(time, scrollFrom, scrollTo) {
-            let step = scrollFrom*100 / time;
+            //recursion position timer
             let timer = setTimeout(function timer() {
                 scrollFrom = scrollFrom - step;
-                if (scrollFrom >= 0) {
+                if (scrollFrom >= scrollTo) {
                     window.scrollTo(0, scrollFrom);
                     console.log(scrollFrom);
                     timer = setTimeout(timer, 1);
                 } else {
                     clearTimeout(timer);
                 }
-            }, 0);
+            }, delay);
         }
 
-
-        BackTo.toTop = function (duration) {
+        // back to begin function
+        this.toTop = function (duration, delay) {
+            this.params = {
+                duaration: duration || 500,
+                delay: delay || 0
+            }
             let currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
-            timer(duration, currentScrollPos, 0);
-
+            timer(this.params.duaration, currentScrollPos, 0, this.params.delay);
         };
-        return BackTo;
+        this.toCustom = function(duration, delay, toEl){
+            this.params = {
+                duaration: duration || 500,
+                delay: delay || 0,
+                toEl: document.getElementById(toEl).offsetTop || 0
+            }
+            // console.log(toEl);
+            let currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+            timer(this.params.duaration, currentScrollPos, this.params.toEl, this.params.delay);
+        }
     }
 
-    let buttonElem = buttonTopClick();
-    backToButton.addEventListener('click', function (e) {
-        buttonElem.toTop(10000);
+    backToButton.addEventListener('click', function () {
+        let buttonElem = new buttonTopClick();
+        // buttonElem.toTop();
+        console.log( document.getElementById('green'));
+        buttonElem.toCustom(1000,0,'green');
     })
 
 })
