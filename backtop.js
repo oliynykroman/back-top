@@ -11,38 +11,35 @@
 
         function timer(time, scrollFrom, scrollTo, delay) {
             // calc step
-            let step = scrollFrom * 100 / time;
+            let step;
             if (scrollFrom <= scrollTo) {
-                this.direction = false;
+                step = scrollTo * 100 / time;
             } else {
                 this.direction = true;
+                step = scrollFrom * 100 / time;
             }
             //recursion position timer
-            let timer = setTimeout(function timer() {
-                console.log(this.direction);
+            let animateTimer = setTimeout(function timerRecursion() {
                 // go to top
                 if (this.direction) {
-                    console.log('go top');
-                    if (scrollFrom >= scrollTo) {
+                    if (scrollFrom >= scrollTo - step) {
                         scrollFrom = scrollFrom - step;
                     } else {
-                        clearTimeout(timer);
-
+                        clearTimeout(animateTimer);
+                        return
                     }
                 } else {
                     // go to bottom
-                    console.log('go custom');
-                    if (scrollFrom <= scrollTo) {
+                    if (scrollFrom <= scrollTo - step) {
+
                         scrollFrom = scrollFrom + step;
                     } else {
-                        clearTimeout(timer);
-
+                        clearTimeout(animateTimer);
+                        return
                     }
                 }
-
-
                 window.scrollTo(0, scrollFrom);
-                timer = setTimeout(timer, 1);
+                animateTimer = setTimeout(timerRecursion, 1);
             }, delay);
         }
 
@@ -65,7 +62,7 @@
         let buttonElem = new buttonTopClick();
         // buttonElem.toTop();
         console.log(document.getElementById('green'));
-        buttonElem.goTo(1000, 0);
+        buttonElem.goTo(1000, 0, 'green');
     })
 
 })
